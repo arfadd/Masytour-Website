@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Masytour</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --paper: #EEE7D6;
+            --paper-raised: #F8F3E7;
+            --ink: #241F19;
+            --ink-soft: #6E6353;
+            --line: #DCD0B2;
+            --accent: #3F5B44;
+            --accent-ink: #F8F3E7;
+            --tag-cerpen: #3F5B44;
+            --tag-puisi: #7C5C6B;
+            --tag-artikel: #8A6B2E;
+            --danger: #8C3B3B;
+            --radius: 4px;
+            --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+            --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --paper: #1C1812;
+                --paper-raised: #262019;
+                --ink: #ECE4D2;
+                --ink-soft: #A79A80;
+                --line: #3A3122;
+                --accent: #93B79B;
+                --accent-ink: #16211A;
+                --tag-cerpen: #93B79B;
+                --tag-puisi: #CBA6BA;
+                --tag-artikel: #D8B15E;
+                --danger: #C97575;
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --paper: #1C1812;
+            --paper-raised: #262019;
+            --ink: #ECE4D2;
+            --ink-soft: #A79A80;
+            --line: #3A3122;
+            --accent: #93B79B;
+            --accent-ink: #16211A;
+            --tag-cerpen: #93B79B;
+            --tag-puisi: #CBA6BA;
+            --tag-artikel: #D8B15E;
+            --danger: #C97575;
+        }
+
+        html {
+            height: 100%;
+            scroll-padding-top: env(safe-area-inset-top, 0px);
+        }
+
+        body {
+            margin: 0;
+            min-height: 100%;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-body);
+            font-size: 17px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                animation-duration: .001ms !important;
+                transition-duration: .001ms !important;
+            }
+        }
+
+        .wrap {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 22px;
+        }
+
+        .wrap-narrow {
+            max-width: 660px;
+            margin: 0 auto;
+            padding: 0 22px;
+        }
+
+        .site-header {
+            padding-top: calc(30px + env(safe-area-inset-top, 0px));
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .header-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .site-name {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-align: left;
+            color: var(--ink);
+        }
+
+        .btn {
+            font-family: var(--font-body);
+            font-size: .92rem;
+            background: none;
+            border: 1px solid var(--ink);
+            color: var(--ink);
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--ink);
+            color: var(--paper);
+        }
+
+        .btn-accent {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: var(--accent-ink);
+        }
+
+        .btn-accent:hover {
+            opacity: .88;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: .85rem;
+            color: var(--ink-soft);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .link-btn:hover {
+            color: var(--ink);
+        }
+
+        .link-btn.danger:hover {
+            color: var(--danger);
+        }
+
+        .nav {
+            display: flex;
+            gap: 22px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            padding: 2px 0;
+            font-size: .98rem;
+            color: var(--ink-soft);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav button.active {
+            color: var(--ink);
+            border-bottom-color: var(--accent);
+        }
+
+        .hero {
+            padding-top: 40px;
+            padding-bottom: 4px;
+        }
+
+        .tagline {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-weight: 400;
+            font-size: clamp(1.35rem, 3.2vw, 1.9rem);
+            max-width: 36ch;
+            margin: 0;
+        }
+
+        .work-list {
+            list-style: none;
+            margin: 26px 0 60px;
+            padding: 0;
+        }
+
+        .work-row {
+            border-bottom: 1px solid var(--line);
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .work-row-open {
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 0;
+            cursor: pointer;
+            display: block;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: .72rem;
+            padding: 2px 9px;
+            border-radius: 2px;
+            margin-bottom: 8px;
+            color: var(--accent-ink);
+        }
+
+        .tag-cerpen {
+            background: var(--tag-cerpen);
+        }
+
+        .tag-puisi {
+            background: var(--tag-puisi);
+        }
+
+        .tag-artikel {
+            background: var(--tag-artikel);
+        }
+
+        .work-title {
+            display: block;
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 1.26rem;
+            margin: 0 0 6px;
+        }
+
+        .work-excerpt {
+            font-style: italic;
+            color: var(--ink-soft);
+            margin: 0;
+            font-size: .95rem;
+            max-width: 58ch;
+        }
+
+        .work-row-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .work-row-meta time {
+            font-size: .84rem;
+            color: var(--ink-soft);
+            white-space: nowrap;
+        }
+
+        .row-admin {
+            display: flex;
+            gap: 10px;
+        }
+
+        .empty-list {
+            padding: 56px 0;
+            color: var(--ink-soft);
+            font-style: italic;
+        }
+
+        .reading-section {
+            padding-top: 40px;
+            padding-bottom: 80px;
+        }
+
+        .reading-section .back-link {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--ink-soft);
+            font-size: .92rem;
+            cursor: pointer;
+            margin-bottom: 26px;
+            display: block;
+        }
+
+        .reading-section .back-link:hover {
+            color: var(--ink);
+        }
+
+        .reading-section h1 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: clamp(1.7rem, 4vw, 2.3rem);
+            margin: 10px 0 8px;
+            line-height: 1.22;
+        }
+
+        .reading-meta {
+            color: var(--ink-soft);
+            font-size: .9rem;
+            margin-bottom: 30px;
+        }
+
+        .reading-body {
+            font-size: 1.07rem;
+        }
+
+        .reading-body p,
+        .reading-body .stanza {
+            margin: 0 0 1.3em;
+            line-height: 1.8;
+        }
+
+        .reading-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 36px;
+        }
+
+        .about-section {
+            padding-top: 40px;
+            padding-bottom: 80px;
+        }
+
+        .about-section h1 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .about-section p {
+            line-height: 1.75;
+            margin: 1.1em 0 0;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(20, 17, 12, .5);
+            display: flex;
+            justify-content: center;
+            padding: max(24px, env(safe-area-inset-top, 0px)) 16px 24px;
+            overflow-y: auto;
+            z-index: 50;
+        }
+
+        .panel {
+            background: var(--paper-raised);
+            max-width: 540px;
+            width: 100%;
+            padding: 28px;
+            border-radius: 8px;
+            margin-top: 16px;
+            height: fit-content;
+        }
+
+        .panel h2 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.35rem;
+            margin: 0 0 20px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field label {
+            display: block;
+            font-size: .84rem;
+            color: var(--ink-soft);
+            margin-bottom: 6px;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 9px 11px;
+            border: 1px solid var(--line);
+            background: var(--paper);
+            color: var(--ink);
+            border-radius: 5px;
+        }
+
+        .field textarea {
+            min-height: 180px;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        .panel-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+            background: var(--ink);
+            color: var(--paper);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: .88rem;
+            z-index: 80;
+            max-width: 86vw;
+            text-align: center;
+        }
+
+        footer {
+            padding: 28px 0 calc(28px + env(safe-area-inset-bottom, 0px));
+            text-align: center;
+            color: var(--ink-soft);
+            font-size: .84rem;
+            border-top: 1px solid var(--line);
+            margin-top: 20px;
+        }
+
+        @media (max-width:560px) {
+            .work-row {
+                flex-direction: column;
+            }
+
+            .work-row-meta {
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script id="site-data"
+        type="application/json">{"settings":{"siteName":"Masytour","tagline":"Cerpen, puisi, dan tulisan lain dari meja kerja saya.","bio":"Halo! Saya sedang mengumpulkan cerita dan puisi di sini. Klik \"Ubah profil\" untuk mengganti bagian ini dengan ceritamu sendiri \u2014 buku yang sedang ditulis, genre favorit, atau apa saja yang ingin pembaca tahu."},"works":[{"id":"w1","type":"cerpen","title":"Kereta Terakhir","date":"2026-08-14","content":"Peron nomor tiga sudah sepi ketika Retno sampai. Jam di dinding menunjukkan pukul sebelas lewat empat menit, dan kereta terakhir baru saja bergerak menjauh, lampu merah di gerbong belakang mengecil pelan-pelan seperti bara rokok yang ditiup angin.\n\nIa tidak berlari. Sudah lama Retno berhenti mengejar sesuatu yang jelas-jelas sudah pergi. Ia duduk di bangku besi yang dingin, meletakkan tas di pangkuan, dan membiarkan malam mengambil alih napasnya.\n\nPonselnya bergetar sekali. Pesan dari Bara: 'Sampai rumah aman?' Retno menatap layar itu cukup lama sebelum mengetik balasan singkat, 'Ketinggalan kereta.' Ia tidak menambahkan bahwa ia sengaja datang terlambat, bahwa ada bagian dari dirinya yang ingin tinggal sebentar lagi di kota yang akan segera ia tinggalkan.\n\nKereta berikutnya baru datang pukul lima pagi. Retno menyandarkan kepala ke dinding peron, memejamkan mata, dan untuk pertama kalinya dalam berbulan-bulan, ia tidak buru-buru pergi ke mana pun.","excerpt":""},{"id":"w2","type":"puisi","title":"Catatan Kecil untuk Hujan","date":"2026-07-02","content":"Hujan datang tanpa mengetuk,\nmembasahi jendela yang lupa kututup,\ndan aku duduk diam,\nmembiarkan dingin masuk sedikit demi sedikit.\n\nAda suara yang hanya bisa didengar\nketika semua orang memilih diam:\natap yang berbisik,\ndaun yang menyerah pelan-pelan.\n\nAku menulis namamu di kaca berembun,\nbukan untuk mengingat,\nhanya supaya jariku punya alasan\nuntuk bergerak sedikit lebih lama.","excerpt":""},{"id":"w3","type":"artikel","title":"Kenapa Saya Menulis Setiap Pagi","date":"2026-06-20","content":"Saya mulai menulis pukul enam pagi, sebelum ponsel sempat menawarkan alasan untuk melakukan hal lain. Bukan karena pagi hari ajaib, tapi karena di jam itu belum ada yang meminta apa-apa dari saya.\n\nKebiasaan ini dimulai dari hal sederhana: saya ingin punya satu ruang di mana tulisan tidak harus bagus, hanya harus ada. Sebagian besar yang saya tulis di pagi hari tidak pernah dibaca siapa pun, dan itu justru yang membuatnya terasa aman untuk dicoba.\n\nDari tumpukan catatan pagi itulah beberapa cerpen dan puisi di halaman ini lahir. Kalau kamu juga menulis, saya percaya kebiasaan kecil semacam ini \u2014 yang tidak terlihat mengesankan dari luar \u2014 sering kali menjadi alasan sebuah tulisan akhirnya selesai.","excerpt":""}]}</script>
+    <script>(function App() {
+            'use strict';
+
+            var DOC_HEAD = `<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Masytour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;}
+:root{
+--paper:#EEE7D6;
+--paper-raised:#F8F3E7;
+--ink:#241F19;
+--ink-soft:#6E6353;
+--line:#DCD0B2;
+--accent:#3F5B44;
+--accent-ink:#F8F3E7;
+--tag-cerpen:#3F5B44;
+--tag-puisi:#7C5C6B;
+--tag-artikel:#8A6B2E;
+--danger:#8C3B3B;
+--radius:4px;
+--font-display:'Fraunces','Iowan Old Style',Georgia,serif;
+--font-body:'Source Serif 4',Georgia,'Times New Roman',serif;
+padding-top:env(safe-area-inset-top,0px);
+padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+:root:not([data-theme="light"]){
+--paper:#1C1812;--paper-raised:#262019;--ink:#ECE4D2;--ink-soft:#A79A80;
+--line:#3A3122;--accent:#93B79B;--accent-ink:#16211A;
+--tag-cerpen:#93B79B;--tag-puisi:#CBA6BA;--tag-artikel:#D8B15E;--danger:#C97575;
+}
+}
+:root[data-theme="dark"]{
+--paper:#1C1812;--paper-raised:#262019;--ink:#ECE4D2;--ink-soft:#A79A80;
+--line:#3A3122;--accent:#93B79B;--accent-ink:#16211A;
+--tag-cerpen:#93B79B;--tag-puisi:#CBA6BA;--tag-artikel:#D8B15E;--danger:#C97575;
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);}
+body{
+margin:0;min-height:100%;background:var(--paper);color:var(--ink);
+font-family:var(--font-body);font-size:17px;line-height:1.5;
+-webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit;}
+a{color:inherit;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;}}
+
+.wrap{max-width:860px;margin:0 auto;padding:0 22px;}
+.wrap-narrow{max-width:660px;margin:0 auto;padding:0 22px;}
+
+.site-header{padding-top:calc(30px + env(safe-area-inset-top,0px));padding-bottom:18px;border-bottom:1px solid var(--line);}
+.header-row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.site-name{font-family:var(--font-display);font-weight:600;font-size:1.5rem;background:none;border:none;padding:0;cursor:pointer;text-align:left;color:var(--ink);}
+.btn{font-family:var(--font-body);font-size:.92rem;background:none;border:1px solid var(--ink);color:var(--ink);padding:8px 16px;border-radius:var(--radius);cursor:pointer;}
+.btn:hover{background:var(--ink);color:var(--paper);}
+.btn-accent{border-color:var(--accent);background:var(--accent);color:var(--accent-ink);}
+.btn-accent:hover{opacity:.88;}
+.link-btn{background:none;border:none;padding:0;font-size:.85rem;color:var(--ink-soft);text-decoration:underline;cursor:pointer;}
+.link-btn:hover{color:var(--ink);}
+.link-btn.danger:hover{color:var(--danger);}
+
+.nav{display:flex;gap:22px;margin-top:16px;flex-wrap:wrap;}
+.nav button{background:none;border:none;padding:2px 0;font-size:.98rem;color:var(--ink-soft);cursor:pointer;border-bottom:2px solid transparent;}
+.nav button.active{color:var(--ink);border-bottom-color:var(--accent);}
+
+.hero{padding-top:40px;padding-bottom:4px;}
+.tagline{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(1.35rem,3.2vw,1.9rem);max-width:36ch;margin:0;}
+
+.work-list{list-style:none;margin:26px 0 60px;padding:0;}
+.work-row{border-bottom:1px solid var(--line);padding:20px 0;display:flex;justify-content:space-between;gap:16px;align-items:flex-start;}
+.work-row-open{background:none;border:none;text-align:left;padding:0;cursor:pointer;display:block;flex:1;min-width:0;}
+.tag{display:inline-block;font-size:.72rem;padding:2px 9px;border-radius:2px;margin-bottom:8px;color:var(--accent-ink);}
+.tag-cerpen{background:var(--tag-cerpen);}
+.tag-puisi{background:var(--tag-puisi);}
+.tag-artikel{background:var(--tag-artikel);}
+.work-title{display:block;font-family:var(--font-display);font-weight:500;font-size:1.26rem;margin:0 0 6px;}
+.work-excerpt{font-style:italic;color:var(--ink-soft);margin:0;font-size:.95rem;max-width:58ch;}
+.work-row-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
+.work-row-meta time{font-size:.84rem;color:var(--ink-soft);white-space:nowrap;}
+.row-admin{display:flex;gap:10px;}
+
+.empty-list{padding:56px 0;color:var(--ink-soft);font-style:italic;}
+
+.reading-section{padding-top:40px;padding-bottom:80px;}
+.reading-section .back-link{background:none;border:none;padding:0;color:var(--ink-soft);font-size:.92rem;cursor:pointer;margin-bottom:26px;display:block;}
+.reading-section .back-link:hover{color:var(--ink);}
+.reading-section h1{font-family:var(--font-display);font-weight:600;font-size:clamp(1.7rem,4vw,2.3rem);margin:10px 0 8px;line-height:1.22;}
+.reading-meta{color:var(--ink-soft);font-size:.9rem;margin-bottom:30px;}
+.reading-body{font-size:1.07rem;}
+.reading-body p,.reading-body .stanza{margin:0 0 1.3em;line-height:1.8;}
+.reading-actions{display:flex;gap:14px;margin-top:36px;}
+
+.about-section{padding-top:40px;padding-bottom:80px;}
+.about-section h1{font-family:var(--font-display);font-size:1.8rem;margin:0;}
+.about-section p{line-height:1.75;margin:1.1em 0 0;}
+
+.overlay{position:fixed;inset:0;background:rgba(20,17,12,.5);display:flex;justify-content:center;padding:max(24px,env(safe-area-inset-top,0px)) 16px 24px;overflow-y:auto;z-index:50;}
+.panel{background:var(--paper-raised);max-width:540px;width:100%;padding:28px;border-radius:8px;margin-top:16px;height:fit-content;}
+.panel h2{font-family:var(--font-display);font-weight:600;font-size:1.35rem;margin:0 0 20px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:.84rem;color:var(--ink-soft);margin-bottom:6px;}
+.field input,.field select,.field textarea{width:100%;padding:9px 11px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:5px;}
+.field textarea{min-height:180px;line-height:1.6;resize:vertical;}
+.panel-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:6px;font-size:.88rem;z-index:80;max-width:86vw;text-align:center;}
+
+footer{padding:28px 0 calc(28px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--ink-soft);font-size:.84rem;border-top:1px solid var(--line);margin-top:20px;}
+
+@media (max-width:560px){
+.work-row{flex-direction:column;}
+.work-row-meta{flex-direction:row;align-items:center;width:100%;justify-content:space-between;}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script id="site-data" type="application/json">`;
+
+            var DOC_TAIL = "</" + "script>\n<script>(" + App.toString() + ")();</" + "script>\n</body>\n</html>";
+
+            var STATE_EL_ID = 'site-data';
+            var TYPE_LABELS = { cerpen: 'Cerpen', puisi: 'Puisi', artikel: 'Artikel' };
+            var MONTHS = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            function loadState() {
+                var fallback = { settings: { siteName: 'Portofolio Penulis', tagline: '', bio: '' }, works: [] };
+                var el = document.getElementById(STATE_EL_ID);
+                if (!el) return fallback;
+                try {
+                    var parsed = JSON.parse(el.textContent);
+                    if (parsed && parsed.settings && Array.isArray(parsed.works)) return parsed;
+                    return fallback;
+                } catch (e) { return fallback; }
+            }
+
+            var state = loadState();
+            var canEdit = false;
+            var artifactCap = null;
+            var view = { name: 'list', filter: 'semua', id: null };
+            var overlay = null;
+            var editingWorkId = null;
+            var saving = false;
+            var toastTimer = null;
+
+            function escapeHtml(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+                });
+            }
+
+            function todayISO() {
+                var d = new Date();
+                var m = (d.getMonth() + 1).toString().padStart(2, '0');
+                var day = d.getDate().toString().padStart(2, '0');
+                return d.getFullYear() + '-' + m + '-' + day;
+            }
+
+            function formatDateID(iso) {
+                if (!iso) return '';
+                var parts = iso.split('-');
+                if (parts.length !== 3) return iso;
+                var y = parseInt(parts[0], 10), m = parseInt(parts[1], 10), d = parseInt(parts[2], 10);
+                if (!m || m < 1 || m > 12) return iso;
+                return d + ' ' + MONTHS[m - 1] + ' ' + y;
+            }
+
+            function firstLineExcerpt(content, len) {
+                var flat = String(content || '').replace(/\s+/g, ' ').trim();
+                if (flat.length <= len) return flat;
+                return flat.slice(0, len).replace(/\s+\S*$/, '') + '\u2026';
+            }
+
+            function excerptOf(w) {
+                return (w.excerpt && w.excerpt.trim()) ? w.excerpt.trim() : firstLineExcerpt(w.content, 130);
+            }
+
+            function sortedWorks(list) {
+                return list.slice().sort(function (a, b) {
+                    if (a.date === b.date) return (b.id || '').localeCompare(a.id || '');
+                    return a.date < b.date ? 1 : -1;
+                });
+            }
+
+            function uid() {
+                return 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+            }
+
+            function renderContentHtml(w) {
+                var raw = String(w.content || '').replace(/\r\n/g, '\n').trim();
+                var blocks = raw.split(/\n\s*\n/);
+                var cls = (w.type === 'puisi') ? 'stanza' : '';
+                return blocks.map(function (b) {
+                    return '<p class="' + cls + '">' + escapeHtml(b).replace(/\n/g, '<br>') + '</p>';
+                }).join('');
+            }
+
+            function navBtn(key, label) {
+                var active = (view.name === 'list' && view.filter === key) ? 'active' : '';
+                return '<button data-action="filter" data-filter="' + key + '" class="' + active + '">' + label + '</button>';
+            }
+
+            function renderHeader() {
+                var s = state.settings;
+                return '<div class="site-header"><div class="wrap">' +
+                    '<div class="header-row">' +
+                    '<button class="site-name" data-action="home">' + escapeHtml(s.siteName || 'Portofolio Penulis') + '</button>' +
+                    '<div class="header-actions">' + (canEdit ? '<button class="btn btn-accent" data-action="new">Tulis baru</button>' : '') + '</div>' +
+                    '</div>' +
+                    '<nav class="nav">' +
+                    navBtn('semua', 'Semua') + navBtn('cerpen', 'Cerpen') + navBtn('puisi', 'Puisi') + navBtn('artikel', 'Artikel') +
+                    '<button data-action="about" class="' + (view.name === 'about' ? 'active' : '') + '">Tentang</button>' +
+                    '</nav>' +
+                    '</div></div>';
+            }
+
+            function renderHero() {
+                if (view.name !== 'list') return '';
+                var tagline = (state.settings.tagline || '').trim();
+                if (!tagline) return '';
+                return '<div class="wrap hero"><p class="tagline">' + escapeHtml(tagline) + '</p></div>';
+            }
+
+            function renderList() {
+                var items = sortedWorks(state.works).filter(function (w) {
+                    return view.filter === 'semua' || w.type === view.filter;
+                });
+                if (items.length === 0) {
+                    var msg = state.works.length === 0
+                        ? ('Belum ada karya di sini.' + (canEdit ? ' Klik \u201cTulis baru\u201d untuk mulai.' : ' Silakan kembali lagi nanti.'))
+                        : 'Belum ada karya untuk kategori ini.';
+                    return '<div class="wrap"><p class="empty-list">' + msg + '</p></div>';
+                }
+                var rows = items.map(function (w) {
+                    var admin = canEdit
+                        ? '<span class="row-admin"><button class="link-btn" data-action="edit" data-id="' + w.id + '">Ubah</button><button class="link-btn danger" data-action="delete" data-id="' + w.id + '">Hapus</button></span>'
+                        : '';
+                    return '<li class="work-row">' +
+                        '<button class="work-row-open" data-action="open" data-id="' + w.id + '">' +
+                        '<span class="tag tag-' + w.type + '">' + TYPE_LABELS[w.type] + '</span>' +
+                        '<span class="work-title">' + escapeHtml(w.title) + '</span>' +
+                        '<span class="work-excerpt">' + escapeHtml(excerptOf(w)) + '</span>' +
+                        '</button>' +
+                        '<div class="work-row-meta"><time>' + formatDateID(w.date) + '</time>' + admin + '</div>' +
+                        '</li>';
+                }).join('');
+                return '<div class="wrap"><ul class="work-list">' + rows + '</ul></div>';
+            }
+
+            function renderReading() {
+                var w = state.works.find(function (x) { return x.id === view.id; });
+                if (!w) {
+                    return '<section class="reading-section"><div class="wrap-narrow">' +
+                        '<button class="back-link" data-action="home">\u2190 Kembali</button><p>Karya tidak ditemukan.</p>' +
+                        '</div></section>';
+                }
+                var actions = canEdit
+                    ? '<div class="reading-actions"><button class="btn" data-action="edit" data-id="' + w.id + '">Ubah karya ini</button><button class="btn" data-action="delete" data-id="' + w.id + '">Hapus</button></div>'
+                    : '';
+                return '<section class="reading-section"><div class="wrap-narrow">' +
+                    '<button class="back-link" data-action="home">\u2190 Kembali</button>' +
+                    '<span class="tag tag-' + w.type + '">' + TYPE_LABELS[w.type] + '</span>' +
+                    '<h1>' + escapeHtml(w.title) + '</h1>' +
+                    '<p class="reading-meta">' + formatDateID(w.date) + '</p>' +
+                    '<div class="reading-body">' + renderContentHtml(w) + '</div>' +
+                    actions +
+                    '</div></section>';
+            }
+
+            function renderAbout() {
+                var bio = (state.settings.bio || '').trim();
+                var bioHtml = bio
+                    ? bio.split(/\n\s*\n/).map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('')
+                    : '<p style="color:var(--ink-soft);font-style:italic;">Belum ada bio di sini.</p>';
+                return '<section class="about-section"><div class="wrap-narrow">' +
+                    '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;">' +
+                    '<h1>Tentang</h1>' +
+                    (canEdit ? '<button class="link-btn" data-action="edit-profile">Ubah profil</button>' : '') +
+                    '</div>' + bioHtml +
+                    '</div></section>';
+            }
+
+            function renderMain() {
+                if (view.name === 'reading') return renderReading();
+                if (view.name === 'about') return renderAbout();
+                return renderHero() + renderList();
+            }
+
+            function renderOverlay() {
+                if (overlay === 'work') {
+                    var editing = editingWorkId ? state.works.find(function (w) { return w.id === editingWorkId; }) : null;
+                    var typeOptions = ['cerpen', 'puisi', 'artikel'].map(function (t) {
+                        return '<option value="' + t + '"' + ((editing ? editing.type : 'cerpen') === t ? ' selected' : '') + '>' + TYPE_LABELS[t] + '</option>';
+                    }).join('');
+                    return '<div class="overlay" data-action="overlay-bg"><div class="panel">' +
+                        '<h2>' + (editing ? 'Ubah karya' : 'Tulis karya baru') + '</h2>' +
+                        '<form id="workForm">' +
+                        '<div class="field"><label for="f-title">Judul</label><input id="f-title" name="title" required value="' + escapeHtml(editing ? editing.title : '') + '"></div>' +
+                        '<div class="field"><label for="f-type">Jenis</label><select id="f-type" name="type">' + typeOptions + '</select></div>' +
+                        '<div class="field"><label for="f-date">Tanggal</label><input id="f-date" name="date" type="date" required value="' + (editing ? editing.date : todayISO()) + '"></div>' +
+                        '<div class="field"><label for="f-content">Isi</label><textarea id="f-content" name="content" required placeholder="Tulis di sini. Pisahkan paragraf atau bait dengan satu baris kosong.">' + escapeHtml(editing ? editing.content : '') + '</textarea></div>' +
+                        '<div class="panel-actions"><button type="button" class="btn" data-action="close-overlay">Batal</button><button type="submit" class="btn btn-accent">Simpan</button></div>' +
+                        '</form>' +
+                        '</div></div>';
+                }
+                if (overlay === 'settings') {
+                    var s = state.settings;
+                    return '<div class="overlay" data-action="overlay-bg"><div class="panel">' +
+                        '<h2>Ubah profil</h2>' +
+                        '<form id="settingsForm">' +
+                        '<div class="field"><label for="f-sitename">Nama situs</label><input id="f-sitename" name="siteName" required value="' + escapeHtml(s.siteName) + '"></div>' +
+                        '<div class="field"><label for="f-tagline">Tagline singkat</label><input id="f-tagline" name="tagline" value="' + escapeHtml(s.tagline) + '"></div>' +
+                        '<div class="field"><label for="f-bio">Tentang saya</label><textarea id="f-bio" name="bio">' + escapeHtml(s.bio) + '</textarea></div>' +
+                        '<div class="panel-actions"><button type="button" class="btn" data-action="close-overlay">Batal</button><button type="submit" class="btn btn-accent">Simpan</button></div>' +
+                        '</form>' +
+                        '</div></div>';
+                }
+                return '';
+            }
+
+            function renderFooter() {
+                return '<footer><div class="wrap">\u00A9 ' + new Date().getFullYear() + ' ' + escapeHtml(state.settings.siteName || '') + '</div></footer>';
+            }
+
+            function render() {
+                document.title = state.settings.siteName || 'Portofolio Penulis';
+                var html = renderHeader() + '<main>' + renderMain() + '</main>' + renderFooter() + renderOverlay() + '<div id="toastHolder"></div>';
+                var app = document.getElementById('app');
+                app.innerHTML = html;
+                var f1 = document.getElementById('workForm');
+                if (f1) f1.addEventListener('submit', onSubmitWork);
+                var f2 = document.getElementById('settingsForm');
+                if (f2) f2.addEventListener('submit', onSubmitSettings);
+                if (overlay === 'work') {
+                    var t1 = document.getElementById('f-title'); if (t1) t1.focus();
+                } else if (overlay === 'settings') {
+                    var t2 = document.getElementById('f-sitename'); if (t2) t2.focus();
+                }
+            }
+
+            function showToast(msg) {
+                var holder = document.getElementById('toastHolder');
+                if (!holder) return;
+                holder.innerHTML = '<div class="toast">' + escapeHtml(msg) + '</div>';
+                if (toastTimer) clearTimeout(toastTimer);
+                toastTimer = setTimeout(function () { if (holder) holder.innerHTML = ''; }, 3200);
+            }
+
+            function closeOverlay() {
+                overlay = null;
+                editingWorkId = null;
+                render();
+            }
+
+            function onClick(e) {
+                var t = e.target.closest('[data-action]');
+                if (!t) return;
+                var action = t.getAttribute('data-action');
+                if (action === 'overlay-bg') {
+                    if (e.target === t) closeOverlay();
+                    return;
+                }
+                if (action === 'home') { view = { name: 'list', filter: view.filter || 'semua', id: null }; render(); }
+                else if (action === 'filter') { view = { name: 'list', filter: t.getAttribute('data-filter'), id: null }; render(); }
+                else if (action === 'open') { view = { name: 'reading', filter: view.filter, id: t.getAttribute('data-id') }; render(); window.scrollTo(0, 0); }
+                else if (action === 'about') { view = { name: 'about', filter: view.filter, id: null }; render(); }
+                else if (action === 'new') { editingWorkId = null; overlay = 'work'; render(); }
+                else if (action === 'edit') { editingWorkId = t.getAttribute('data-id'); overlay = 'work'; render(); }
+                else if (action === 'delete') {
+                    var id = t.getAttribute('data-id');
+                    if (window.confirm('Hapus karya ini? Tindakan ini tidak bisa dibatalkan.')) deleteWork(id);
+                }
+                else if (action === 'edit-profile') { overlay = 'settings'; render(); }
+                else if (action === 'close-overlay') { closeOverlay(); }
+            }
+
+            function onKeydown(e) {
+                if (e.key === 'Escape' && overlay) closeOverlay();
+            }
+
+            function onSubmitWork(e) {
+                e.preventDefault();
+                var fd = new FormData(e.target);
+                var title = (fd.get('title') || '').toString().trim();
+                var content = (fd.get('content') || '').toString().trim();
+                if (!title || !content) return;
+                var data = {
+                    title: title,
+                    type: (fd.get('type') || 'cerpen').toString(),
+                    date: (fd.get('date') || todayISO()).toString(),
+                    content: content,
+                    excerpt: ''
+                };
+                if (editingWorkId) {
+                    var idx = state.works.findIndex(function (w) { return w.id === editingWorkId; });
+                    if (idx > -1) state.works[idx] = Object.assign({}, state.works[idx], data);
+                } else {
+                    data.id = uid();
+                    state.works.push(data);
+                }
+                overlay = null; editingWorkId = null;
+                render();
+                persist();
+            }
+
+            function onSubmitSettings(e) {
+                e.preventDefault();
+                var fd = new FormData(e.target);
+                state.settings = {
+                    siteName: (fd.get('siteName') || '').toString().trim() || 'Portofolio Penulis',
+                    tagline: (fd.get('tagline') || '').toString().trim(),
+                    bio: (fd.get('bio') || '').toString().trim()
+                };
+                overlay = null;
+                render();
+                persist();
+            }
+
+            function deleteWork(id) {
+                state.works = state.works.filter(function (w) { return w.id !== id; });
+                if (view.name === 'reading' && view.id === id) view = { name: 'list', filter: view.filter, id: null };
+                render();
+                persist();
+            }
+
+            function buildFullHtml() {
+                var json = JSON.stringify(state).replace(/</g, '\\u003c');
+                return DOC_HEAD + json + DOC_TAIL;
+            }
+
+            function persist() {
+                if (!artifactCap) { showToast('Perubahan tersimpan di tampilan ini saja (pratinjau).'); return; }
+                if (saving) return;
+                saving = true;
+                artifactCap.publish(buildFullHtml()).then(function () {
+                    saving = false;
+                }).catch(function (err) {
+                    saving = false;
+                    var code = err && err.code;
+                    if (code === 'conflict') return;
+                    if (code === 'not_writer' || code === 'not_granted') {
+                        canEdit = false; overlay = null; render();
+                        showToast('Tampilan ini kini hanya bisa dibaca.');
+                        return;
+                    }
+                    showToast('Tidak tersimpan. Coba simpan lagi.');
+                });
+            }
+
+            function init() {
+                render();
+                document.addEventListener('click', onClick);
+                document.addEventListener('keydown', onKeydown);
+                if (window.claude && typeof window.claude.use === 'function') {
+                    Promise.all([window.claude.use('artifact'), window.claude.use('user')]).then(function (res) {
+                        artifactCap = res[0];
+                        var userCap = res[1];
+                        return (userCap && typeof userCap.canEdit === 'function') ? userCap.canEdit() : false;
+                    }).then(function (ce) {
+                        canEdit = !!ce;
+                        render();
+                    }).catch(function () { });
+                }
+            }
+
+            init();
+        })();</script>
+</body>
+
+</html>
